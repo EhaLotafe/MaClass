@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord Parent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="../assets/css/styles.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-semibold">Tableau de bord - Parent</h1>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="../backend/logout.php" class="hover:text-gray-200">Déconnexion</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Section -->
+    <section class="container mx-auto my-8">
+        <div id="enfants-section" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Enfants inscrits -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold mb-4">Enfants inscrits</h2>
+                <ul id="enfants-list" class="list-disc ml-6 text-gray-700">
+                    <!-- Les enfants seront affichés ici -->
+                </ul>
+            </div>
+            
+            <!-- Paiements -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold mb-4">Paiements</h2>
+                <div id="paiements-section" class="space-y-4">
+                    <!-- Les paiements seront affichés ici -->
+                </div>
+                <h3 class="text-xl font-semibold mt-6">Évolution des Paiements</h3>
+                <canvas id="paiementsChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-4">
+        <p>&copy; 2024 Gestion Scolaire. Tous droits réservés.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Récupération des données via dashboard_parent.php
+        async function fetchDashboardData() {
+            try {
+                const response = await fetch("../backend/dashboard_parent.php");
+                const result = await response.json();
+
+                if (result.success) {
+                    const enfants = result.data.enfants;
+                    const paiements = result.data.paiements;
+
+                    // Affichage des enfants
+                    const enfantsList = document.getElementById("enfants-list");
+                    enfantsList.innerHTML = "";
+                    enfants.forEach((enfant) => {
+                        const li = document.createElement("li");
+                        li.innerHTML = `<a href="enfant_details.html?enfant_id=${enfant.id}" 
+                            class="text-blue-600 hover:underline">${enfant.nom} - Classe : ${enfant.classe}</a>`;
+                        enfantsList.appendChild(li);
+                    });
+
+                    // Affichage des paiements
+                    const paiementsSection = document.getElementById("paiements-section");
+                    paiementsSection.innerHTML = "";
+                    const paiementsMontants = [];
+                    const paiementsDates = [];
+
+                    paiements.forEach((paiement) => {
+                        const paiementDiv = document.createElement("div");
+                        paiementDiv.classList.add("border", "p-4", "rounded-lg", "bg-gray-100");
+
+                        paiementDiv.innerHTML = `
+                            <p><strong>Élève :</strong> ${paiement.eleve_nom}</p>
+                            <p><strong>Montant :</strong> ${paiement.montant} USD</p>
+                            <p><strong>Date :</strong> ${paiement.date}</p>
+                            <button 
+                                class="mt-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition" 
+                                onclick="payerEnLigne(${paiement.id})">
+                                Payer en ligne
+                            </button>
+                        `;
+                        paiementsSection.appendChild(paiementDiv);
+
+                        // Ajouter les montants et dates au graphique
+                        paiementsMontants.push(paiement.montant);
+                        paiementsDates.push(paiement.date);
+                    });
+
+                    // Générer le graphique avec Chart.js
+                    afficherGraphiquePaiements(paiementsDates, paiementsMontants);
+                } else {
+                    alert("Erreur lors du chargement des données : " + result.message);
+                }
+            } catch (error) {
+                console.error("Erreur de requête : ", error);
+            }
+        }
+
+        // Fonction pour simuler un paiement en ligne
+        function payerEnLigne(paiementId) {
+            alert(`Paiement en ligne pour l'ID de paiement : ${paiementId}`);
+            // Vous pouvez intégrer une vraie passerelle de paiement ici
+        }
+
+        // Générer le graphique des paiements
+        function afficherGraphiquePaiements(labels, data) {
+            const ctx = document.getElementById("paiementsChart").getContext("2d");
+            new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Montant des paiements (USD)",
+                        data: data,
+                        borderColor: "blue",
+                        backgroundColor: "rgba(0, 0, 255, 0.2)",
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Charger les données au démarrage
+        fetchDashboardData();
+    </script>
+
+</body>
+</html>

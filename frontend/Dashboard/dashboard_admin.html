@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord Administrateur</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="dashboard.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <h2>Admin Panel</h2>
+        </div>
+        <ul class="menu">
+            <li><a href="#" class="active" data-section="dashboard"><i class="icon">&#x1F4CA;</i> Tableau de bord</a></li>
+            <li><a href="#" data-section="parents"><i class="icon">&#x1F465;</i> Parents</a></li>
+            <li><a href="#" data-section="eleves"><i class="icon">&#x1F393;</i> Élèves</a></li>
+            <li><a href="#" data-section="paiements"><i class="icon">&#x1F4B0;</i> Paiements</a></li>
+            <li><a href="#" data-section="communiques"><i class="icon">&#x2709;</i> Communiqués</a></li>
+            <li><a href="../backend/logout.php"><i class="icon">&#x1F6AA;</i> Déconnexion</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section">
+            <header>
+                <h1>Bienvenue, Administrateur</h1>
+            </header>
+            <div class="cards grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="card">
+                    <h3>Total Parents</h3>
+                    <p id="total-parents">0</p>
+                </div>
+                <div class="card">
+                    <h3>Total Élèves</h3>
+                    <p id="total-eleves">0</p>
+                </div>
+                <div class="card">
+                    <h3>Total Paiements</h3>
+                    <p id="total-paiements">0 USD</p>
+                </div>
+            </div>
+
+            <!-- Chart Section -->
+            <div class="mt-8">
+                <h2 class="text-xl font-bold mb-4">Statistiques de Paiements</h2>
+                <canvas id="paiements-chart"></canvas>
+            </div>
+        </section>
+
+        <!-- Parents Section -->
+        <section id="parents" class="section hidden">
+            <h2 class="text-2xl font-bold mb-4">Gestion des Parents</h2>
+            <div id="parents-list" class="space-y-4">
+                <!-- Liste des parents chargée dynamiquement -->
+            </div>
+        </section>
+
+        <!-- Élèves Section -->
+        <section id="eleves" class="section hidden">
+            <h2 class="text-2xl font-bold mb-4">Gestion des Élèves</h2>
+            <div id="eleves-list" class="space-y-4">
+                <!-- Liste des élèves chargée dynamiquement -->
+            </div>
+        </section>
+
+        <!-- Paiements Section -->
+        <section id="paiements" class="section hidden">
+            <h2 class="text-2xl font-bold mb-4">Gestion des Paiements</h2>
+            <div id="paiements-list" class="space-y-4">
+                <!-- Liste des paiements chargée dynamiquement -->
+            </div>
+        </section>
+
+<!-- Communiqués Section -->
+<section id="communiques" class="section hidden">
+    <h2 class="text-2xl font-bold mb-4">Gestion des Communiqués</h2>
+
+    <!-- Formulaire pour nouveau communiqué -->
+    <textarea id="communique-text" class="w-full p-4 border rounded-lg mb-4" placeholder="Écrivez un nouveau communiqué..."></textarea>
+    <s id="communique-cible" class="w-full p-3 border rounded-lg mb-4">
+        <option value="ecole">Pour toute l'école</option>
+        <!-- Les élèves seront chargés dynamiquement -->
+    </select>
+    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" onclick="envoyerCommunique()">
+        Publier
+    </button>
+
+    <!-- Liste des communiqués -->
+    <h3 class="text-xl font-semibold mt-6">Communiqués existants</h3>
+    <ul id="communiques-list" class="mt-4">
+        <!-- Les communiqués seront insérés dynamiquement -->
+    </ul>
+</section>
+
+    <!-- Scripts -->
+    <script>
+        // Navigation dynamique
+        document.querySelectorAll(".menu li a").forEach(link => {
+            link.addEventListener("click", (e) => {
+                e.preventDefault();
+                document.querySelectorAll(".section").forEach(section => section.classList.add("hidden"));
+                const sectionId = link.dataset.section;
+                document.getElementById(sectionId).classList.remove("hidden");
+                document.querySelectorAll(".menu li a").forEach(a => a.classList.remove("active"));
+                link.classList.add("active");
+            });
+        });
+
+        // Charger les données du tableau de bord
+        async function fetchDashboardData() {
+            try {
+                const response = await fetch("dashboard_admin.php", { method: "GET" });
+                const data = await response.json();
+
+                // Mettre à jour les cartes
+                document.getElementById("total-parents").textContent = data.total_parents;
+                document.getElementById("total-eleves").textContent = data.total_eleves;
+                document.getElementById("total-paiements").textContent = `${data.total_paiements} USD`;
+
+                // Charger le graphique
+                const ctx = document.getElementById("paiements-chart").getContext("2d");
+                new Chart(ctx, {
+                    type: "bar",
+                    data: {
+                        labels: data.chart_labels,
+                        datasets: [{
+                            label: "Montants (USD)",
+                            data: data.chart_data,
+                            backgroundColor: "rgba(54, 162, 235, 0.6)",
+                            borderColor: "rgba(54, 162, 235, 1)",
+                            borderWidth: 1,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: { beginAtZero: true },
+                        },
+                    },
+                });
+            } catch (error) {
+                console.error("Erreur lors du chargement des données :", error);
+            }
+        }
+
+        // Fonction pour envoyer un communiqué
+        function envoyerCommunique() {
+            const communique = document.getElementById("communique-text").value.trim();
+            if (!communique) {
+                alert("Veuillez écrire un communiqué avant de publier !");
+                return;
+            }
+
+            alert(`Communiqué envoyé : ${communique}`);
+            // Appeler le backend pour enregistrer le communiqué
+        }
+
+        // Charger les données au démarrage
+        fetchDashboardData();
+    </script>
+</body>
+</html>

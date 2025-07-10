@@ -1,0 +1,795 @@
+# frontend
+# index.html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Scolaire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="styles.css" rel="stylesheet">
+
+</head>
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-semibold">Gestion Scolaire</h1>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="connexion.php" class="hover:text-gray-200">Connexion Parent</a></li>
+                    
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-green-500 text-white text-center py-16">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold mb-4">Bienvenue sur la plateforme de gestion scolaire</h2>
+            <p class="text-lg mb-6">Gérez facilement les inscriptions, paiements et le suivi de vos enfants à l'école.</p>
+            <a href="connexion.php" class="bg-white text-green-500 px-6 py-2 rounded-lg hover:bg-gray-200 transition duration-300">Se connecter</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-4 mt-8">
+        <p>&copy; 2024 Gestion Scolaire. Tous droits réservés.</p>
+    </footer>
+    <script src="scripts.js"></script>
+</body>
+</html>
+# connexion_parent.html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Parent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-200">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-semibold">Gestion Scolaire</h1>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="index.html" class="hover:text-gray-200">Retour à l'accueil</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Form Section -->
+    <section class="flex items-center justify-center min-h-screen">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
+            <h2 class="text-2xl font-semibold text-center mb-6">Connexion Parent</h2>
+            <form action="../backend/connexion.php" method="POST">
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-700">Email</label>
+                    <input type="email" id="email" name="email" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Entrez votre email">
+                </div>
+                <div class="mb-6">
+                    <label for="mot_de_passe" class="block text-gray-700">Mot de passe</label>
+                    <input type="password" id="mot_de_passe" name="mot_de_passe" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Entrez votre mot de passe">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-300">Se connecter</button>
+            </form>
+        </div>
+    </section>
+    <script src="scripts.js"></script>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-4">
+        <p>&copy; 2024 Gestion Scolaire. Tous droits réservés.</p>
+    </footer>
+
+</body>
+</html>
+
+
+
+# dashboard_parent.html
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord Parent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-semibold">Tableau de bord - Parent</h1>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="connexion_parent.html" class="hover:text-gray-200">Déconnexion</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Section -->
+    <section class="container mx-auto my-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Enfants Info Card -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold mb-4">Enfants inscrits</h2>
+                <ul class="list-disc ml-6">
+                    <li>Nom de l'enfant 1 - Classe 1</li>
+                    <li>Nom de l'enfant 2 - Classe 2</li>
+                </ul>
+            </div>
+
+            <!-- Paiements Info Card -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold mb-4">Paiements</h2>
+                <p>Status des paiements : En retard pour l'enfant 1</p>
+                <p class="mt-4">Historique des paiements disponible.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-4">
+        <p>&copy; 2024 Gestion Scolaire. Tous droits réservés.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/scripts.js"></script>
+</body>
+
+</html>
+
+
+# inscription_parent.html
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription Parent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-semibold">Gestion Scolaire</h1>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="../index.html" class="hover:text-gray-200">Retour à l'accueil</a></li>
+                    <li><a href="connexion_parent.html" class="hover:text-gray-200">Déjà un compte ?</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Form Section -->
+    <section class="flex items-center justify-center min-h-screen">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
+            <h2 class="text-2xl font-semibold text-center mb-6">Inscription Parent</h2>
+            <form action="inscription_parent.php" method="POST">
+                <div class="mb-4">
+                    <label for="nom" class="block text-gray-700">Nom complet</label>
+                    <input type="text" id="nom" name="nom" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Entrez votre nom">
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-700">Email</label>
+                    <input type="email" id="email" name="email" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Entrez votre email">
+                </div>
+                <div class="mb-4">
+                    <label for="mot_de_passe" class="block text-gray-700">Mot de passe</label>
+                    <input type="password" id="mot_de_passe" name="mot_de_passe" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Choisissez un mot de passe">
+                </div>
+                <div class="mb-6">
+                    <label for="matricule" class="block text-gray-700">Numéro matricule de l'enfant</label>
+                    <input type="text" id="matricule" name="matricule" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Entrez le matricule">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-300">S'inscrire</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-4">
+        <p>&copy; 2024 Gestion Scolaire. Tous droits réservés.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/scripts.js"></script>
+</body>
+
+</html>
+
+
+# style.css
+/* Global Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f4f7f6;
+    color: #333;
+}
+
+/* Header Styles */
+header {
+    background-color: #3498db;
+    color: white;
+    padding: 1em 0;
+}
+
+nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav h1 {
+    font-size: 1.8em;
+    margin-left: 20px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin-right: 20px;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #ecf0f1;
+}
+
+/* Hero Section */
+.hero {
+    background-color: #2ecc71;
+    color: white;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.hero h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+/* Footer */
+footer {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav ul {
+        display: block;
+        text-align: center;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    .hero h2 {
+        font-size: 2em;
+    }
+
+    .hero p {
+        font-size: 1em;
+    }
+}
+
+
+dashboard_admin.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <h2>Admin Panel</h2>
+        </div>
+        <ul class="menu">
+            <li><a href="#" class="active"><i class="icon">&#x1F4CA;</i> Dashboard</a></li>
+            <li><a href="#"><i class="icon">&#x1F4E6;</i> Orders</a></li>
+            <li><a href="#"><i class="icon">&#x1F465;</i> Users</a></li>
+            <li><a href="#"><i class="icon">&#x2699;</i> Settings</a></li>
+        </ul>
+    </div>
+    <div class="main">
+        <header>
+            <h1>Welcome, Admin</h1>
+            <button id="logout">Logout</button>
+        </header>
+        <section class="cards">
+            <div class="card">
+                <h3>Total Users</h3>
+                <p>1,254</p>
+            </div>
+            <div class="card">
+                <h3>New Orders</h3>
+                <p>348</p>
+            </div>
+            <div class="card">
+                <h3>Revenue</h3>
+                <p>$12,340</p>
+            </div>
+        </section>
+    </div>
+    <script src="dashboard.js"></script>
+</body>
+</html>
+
+# dashboard.css
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+}
+
+.sidebar {
+    background-color: #2c3e50;
+    color: white;
+    width: 150px;
+    height: 100vh;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar .menu {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar .menu li {
+    margin: 15px 0;
+}
+
+.sidebar .menu li a {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.sidebar .menu li a .icon {
+    margin-right: 10px;
+}
+
+.sidebar .menu li a:hover,
+.sidebar .menu li a.active {
+    background-color: #34495e;
+}
+
+.main {
+    flex: 1;
+    padding: 20px;
+    background-color: #ecf0f1;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 24px;
+    color: #2c3e50;
+}
+
+header button {
+    padding: 10px 20px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+header button:hover {
+    background-color: #c0392b;
+}
+
+.cards {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    flex: 1;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.card p {
+    font-size: 20px;
+    color: #16a085;
+}
+
+# dashboard.js
+document.addEventListener("DOMContentLoaded", () => {
+    const logoutButton = document.getElementById("logout");
+
+    logoutButton.addEventListener("click", () => {
+        const confirmLogout = confirm("Are you sure you want to logout?");
+        if (confirmLogout) {
+            // Redirect or clear session
+            alert("You have been logged out.");
+            window.location.href = "index.html";
+        }
+    });
+});
+
+
+# backend
+# connexion.php
+<?php
+require 'db.php';  // Inclusion du fichier de connexion à la base de données
+
+session_start();  // Démarre la session pour l'utilisateur
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'];
+    $mot_de_passe = $_POST['mot_de_passe'];
+
+    // Vérification si le parent existe dans la base de données
+    $sql = "SELECT * FROM parents WHERE email = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$email]);
+    $parent = $stmt->fetch();
+
+    if ($parent && password_verify($mot_de_passe, $parent['mot_de_passe'])) {
+        // Si l'email et le mot de passe correspondent
+        $_SESSION['parent_id'] = $parent['id'];  // Stocke l'id du parent dans la session
+        header("Location: ../frontend/dashboard_parent.html");  // Redirige vers le tableau de bord du parent
+        exit();
+    } else {
+        echo "Identifiants incorrects.";
+    }
+}
+?>
+
+<!-- Formulaire de connexion -->
+<form method="POST" action="connexion.php">
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="password" name="mot_de_passe" placeholder="Mot de passe" required />
+    <button type="submit">Se connecter</button>
+</form>
+
+# dashboard_admin.php
+vide
+
+
+# dashboard_parent.php
+<?php
+session_start();  // Démarre la session
+
+if (!isset($_SESSION['parent_id'])) {
+    header("Location: ../frontend/connexion_parent.html");  // Redirige si l'utilisateur n'est pas connecté
+    exit();
+}
+
+require 'db.php';  // Inclusion de la connexion à la base de données
+
+$parent_id = $_SESSION['parent_id'];
+$sql = "SELECT * FROM parents WHERE id = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$parent_id]);
+$parent = $stmt->fetch();
+?>
+
+<!-- Affichage du tableau de bord parent -->
+<h1>Bienvenue, <?php echo htmlspecialchars($parent['nom']); ?></h1>
+<a href="../backend/logout.php">Déconnexion</a>
+
+<!-- Informations sur les enfants -->
+<h2>Mes Enfants</h2>
+<?php
+$sql = "SELECT * FROM enfants WHERE parent_id = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$parent_id]);
+$enfants = $stmt->fetchAll();
+
+if ($enfants) {
+    foreach ($enfants as $enfant) {
+        echo "<p>Nom : " . htmlspecialchars($enfant['nom']) . "</p>";
+        echo "<p>Matricule : " . htmlspecialchars($enfant['matricule']) . "</p>";
+        echo "<hr>";
+    }
+} else {
+    echo "<p>Aucun enfant inscrit.</p>";
+}
+?>
+
+# db.php
+<?php
+$host = 'localhost';       // Hôte de la base de données
+$dbname = 'gestion_scolaire'; // Nom de la base de données
+$username = 'root';         // Nom d'utilisateur MySQL
+$password = '';             // Mot de passe MySQL (vide si tu n'en as pas configuré)
+
+try {
+    // Connexion à la base de données
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);  // Pour activer le mode d'erreur de PDO
+} catch (PDOException $e) {
+    die("Erreur de connexion : " . $e->getMessage()); // Si erreur, afficher message
+}
+?>
+
+#gestion_paiements.php
+<?php
+require 'db.php';  // Inclusion du fichier de connexion à la base de données
+
+session_start();  // Démarre la session
+
+// Vérifie si l'utilisateur est administrateur, sinon redirige
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: connexion_admin.php");
+    exit();
+}
+
+// Récupération des paiements effectués
+$sql = "SELECT * FROM paiements ORDER BY date_paiement DESC";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$paiements = $stmt->fetchAll();
+?>
+
+<h1>Gestion des Paiements</h1>
+<a href="logout.php">Déconnexion</a>
+
+<!-- Affichage des paiements -->
+<table>
+    <thead>
+        <tr>
+            <th>Nom de l'Enfant</th>
+            <th>Montant</th>
+            <th>Date du paiement</th>
+            <th>Statut</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        foreach ($paiements as $paiement) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($paiement['enfant_nom']) . "</td>";
+            echo "<td>" . htmlspecialchars($paiement['montant']) . " FC</td>";
+            echo "<td>" . htmlspecialchars($paiement['date_paiement']) . "</td>";
+            echo "<td>" . ($paiement['statut'] == 'payé' ? 'Payé' : 'En attente') . "</td>";
+            echo "</tr>";
+        }
+        ?>
+    </tbody>
+</table>
+
+#inscription.php
+<?php
+require 'db.php';  // Inclusion du fichier de connexion à la base de données
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Récupération des données soumises
+    $nom = $_POST['nom'];
+    $email = $_POST['email'];
+    $telephone = $_POST['telephone'];
+    $mot_de_passe = password_hash($_POST['mot_de_passe'], PASSWORD_BCRYPT);  // Cryptage du mot de passe
+
+    // Préparation de la requête SQL pour insérer les données dans la table parents
+    $sql = "INSERT INTO parents (nom, email, telephone, mot_de_passe) VALUES (?, ?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+
+    try {
+        $stmt->execute([$nom, $email, $telephone, $mot_de_passe]);  // Exécution de la requête
+        echo "Inscription réussie !";  // Message de succès
+    } catch (PDOException $e) {
+        echo "Erreur : " . $e->getMessage();  // Gestion des erreurs
+    }
+}
+?>
+
+<!-- Formulaire d'inscription -->
+<form method="POST" action="inscription.php">
+    <input type="text" name="nom" placeholder="Nom" required />
+    <input type="email" name="email" placeholder="Email" required />
+    <input type="text" name="telephone" placeholder="Téléphone" />
+    <input type="password" name="mot_de_passe" placeholder="Mot de passe" required />
+    <button type="submit">S'inscrire</button>
+</form>
+
+#connexion.php
+vide
+#logout.php
+<?php
+session_start();  // Démarre la session
+session_unset();  // Supprime toutes les variables de session
+session_destroy();  // Détruit la session
+header("Location: index.html");  // Redirige vers la page d'accueil
+exit();
+# assets #
+
+# css
+# styles.css
+/* Global Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f4f7f6;
+    color: #333;
+}
+
+/* Header Styles */
+header {
+    background-color: #3498db;
+    color: white;
+    padding: 1em 0;
+}
+
+nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav h1 {
+    font-size: 1.8em;
+    margin-left: 20px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin-right: 20px;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #ecf0f1;
+}
+
+/* Hero Section */
+.hero {
+    background-color: #2ecc71;
+    color: white;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.hero h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+/* Footer */
+footer {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav ul {
+        display: block;
+        text-align: center;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    .hero h2 {
+        font-size: 2em;
+    }
+
+    .hero p {
+        font-size: 1em;
+    }
+}
+
+# js
+# scripts.js
+// Fonction de validation de formulaire pour la page de connexion
+document.addEventListener("DOMContentLoaded", function() {
+    // Validation du formulaire de connexion
+    const loginForm = document.querySelector("form");
+    if (loginForm) {
+        loginForm.addEventListener("submit", function(event) {
+            const email = document.getElementById("email").value;
+            const mot_de_passe = document.getElementById("mot_de_passe").value;
+
+            if (!email || !mot_de_passe) {
+                alert("Veuillez remplir tous les champs.");
+                event.preventDefault(); // Empêche l'envoi du formulaire si des champs sont vides
+            }
+        });
+    }
+});
+document.getElementById('checkPayments').addEventListener('click', async () => {
+    const response = await fetch('../backend/gestion_paiements.php', {
+        method: 'GET',
+    });
+    const data = await response.json();
+    console.log(data); // Afficher les paiements dans la console ou dans une table HTML
+});

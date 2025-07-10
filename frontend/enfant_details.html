@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de l'enfant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="../assets/css/styles.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-semibold">Détails de l'enfant</h1>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="dashboard_parent.html" class="hover:text-gray-200">Retour</a></li>
+                    <li><a href="../backend/logout.php" class="hover:text-gray-200">Déconnexion</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Section des détails de l'enfant -->
+    <section class="container mx-auto my-8">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold mb-4" id="nom-enfant">Nom de l'enfant</h2>
+            <p><strong>Classe :</strong> <span id="classe-enfant"></span></p>
+            <p><strong>Matricule :</strong> <span id="matricule-enfant"></span></p>
+        </div>
+    </section>
+
+    <!-- Section des notes -->
+    <section class="container mx-auto my-8">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold mb-4">Notes</h2>
+            <table class="w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border border-gray-300 p-2">Matière</th>
+                        <th class="border border-gray-300 p-2">Note</th>
+                        <th class="border border-gray-300 p-2">Commentaire</th>
+                    </tr>
+                </thead>
+                <tbody id="notes-table">
+                    <!-- Les notes seront insérées ici -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Section des paiements -->
+    <section class="container mx-auto my-8">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold mb-4">Paiements</h2>
+            <div id="paiements-section" class="space-y-4">
+                <canvas id="paiementsChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section des communiqués -->
+    <section class="container mx-auto my-8">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold mb-4">Communiqués</h2>
+            <ul id="communiques-list" class="list-disc ml-6 text-gray-700">
+                <!-- Les communiqués seront affichés ici -->
+            </ul>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-4">
+        <p>&copy; 2024 Gestion Scolaire. Tous droits réservés.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        async function fetchEnfantDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const enfantId = urlParams.get("enfant_id");
+
+            if (!enfantId) {
+                alert("Aucun enfant sélectionné.");
+                window.location.href = "dashboard_parent.html";
+                return;
+            }
+
+            try {
+                const response = await fetch(`../backend/enfant_details.php?enfant_id=${enfantId}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    const enfant = result.data.enfant;
+                    const notes = result.data.notes;
+                    const paiements = result.data.paiements;
+                    const communiques = result.data.communiques;
+
+                    // Affichage des infos de l'enfant
+                    document.getElementById("nom-enfant").textContent = enfant.nom;
+                    document.getElementById("classe-enfant").textContent = enfant.classe;
+                    document.getElementById("matricule-enfant").textContent = enfant.matricule;
+
+                    // Affichage des notes
+                    const notesTable = document.getElementById("notes-table");
+                    notesTable.innerHTML = "";
+                    notes.forEach(note => {
+                        const row = `<tr>
+                            <td class="border border-gray-300 p-2">${note.matiere}</td>
+                            <td class="border border-gray-300 p-2">${note.note}</td>
+                            <td class="border border-gray-300 p-2">${note.commentaire}</td>
+                        </tr>`;
+                        notesTable.innerHTML += row;
+                    });
+
+                    // Affichage des paiements sous forme de graphique
+                    afficherGraphiquePaiements(paiements);
+
+                    // Affichage des communiqués
+                    const communiquesList = document.getElementById("communiques-list");
+                    communiquesList.innerHTML = "";
+                    communiques.forEach(communique => {
+                        const li = `<li>${communique.message} <span class="text-gray-500 text-sm">(${communique.date})</span></li>`;
+                        communiquesList.innerHTML += li;
+                    });
+
+                } else {
+                    alert("Erreur lors du chargement des données : " + result.message);
+                }
+            } catch (error) {
+                console.error("Erreur de requête : ", error);
+            }
+        }
+
+        // Fonction pour afficher les paiements sous forme de graphique
+        function afficherGraphiquePaiements(paiements) {
+            const paiementsMontants = paiements.map(p => p.montant);
+            const paiementsDates = paiements.map(p => p.date);
+
+            const ctx = document.getElementById("paiementsChart").getContext("2d");
+            new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: paiementsDates,
+                    datasets: [{
+                        label: "Montant des paiements (USD)",
+                        data: paiementsMontants,
+                        borderColor: "blue",
+                        backgroundColor: "rgba(0, 0, 255, 0.2)",
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        fetchEnfantDetails();
+    </script>
+
+</body>
+</html>
